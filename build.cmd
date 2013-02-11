@@ -10,7 +10,7 @@ mkdir bin
 :Build
 if "%1" == "" goto BuildDefaults
 
-%MsBuildPath%\msbuild.exe FastChat.msbuild /m /nr:false /t:%* /p:Platform="Any CPU" /v:M /fl /flp:LogFile=bin\msbuild.log;Verbosity=Normal
+%MsBuildPath%\msbuild.exe AspNetMvcUnityExtensions.msbuild /m /nr:false /t:%* /p:Platform="Any CPU" /v:M /fl /flp:LogFile=bin\msbuild.log;Verbosity=Normal
 if errorlevel 1 goto BuildFail
 goto BuildSuccess
 
@@ -25,7 +25,7 @@ echo *** BUILD FAILED ***
 goto End
 
 :BuildDefaults
-%MsBuildPath%\msbuild.exe FastChat.msbuild /m /nr:false /p:Platform="Any CPU" /v:M /fl /flp:LogFile=bin\msbuild.log;Verbosity=Normal
+%MsBuildPath%\msbuild.exe AspNetMvcUnityExtensions.msbuild /m /nr:false /p:Platform="Any CPU" /v:M /fl /flp:LogFile=bin\msbuild.log;Verbosity=Normal
 if errorlevel 1 goto BuildFail
 goto BuildSuccess
 
