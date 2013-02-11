@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
+using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 namespace MVCUnityExtensions
 {
@@ -17,6 +18,7 @@ namespace MVCUnityExtensions
         public void Begin()
         {
             DependencyResolver.SetResolver(new UnityDependencyResolver(CurrentContainer));
+            DynamicModuleUtility.RegisterModule(typeof(RequestLifetimeHttpModule));
         }
 
         public void End()
