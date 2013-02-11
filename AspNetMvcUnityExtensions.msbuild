@@ -1,0 +1,45 @@
+<Project DefaultTargets="AspNetMvcUnityExtensions" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <NuGetExe Condition="$(NuGetExe) == ''">.\.nuget\nuget.exe</NuGetExe>
+	 <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+     <CodeAnalysis Condition=" '$(CodeAnalysis)' == '' ">true</CodeAnalysis>
+     <StyleCopEnabled Condition=" '$(StyleCopEnabled)' == '' ">true</StyleCopEnabled>
+     <BuildInParallel Condition=" '$(BuildInParallel)' == '' And $(MSBuildNodeCount) &gt; 1 ">true</BuildInParallel>
+     <BuildInParallel Condition=" '$(BuildInParallel)' == '' ">false</BuildInParallel>
+  </PropertyGroup>
+   <ItemGroup>            
+        <SolutionsToBuild Include="AspNetMvcUnityExtensions.sln">
+            <ReleaseRoot>.</ReleaseRoot>
+            <BuildInParallel>$(BuildInParallel)</BuildInParallel>
+        </SolutionsToBuild>    
+    </ItemGroup>    
+  <Target Name="Clean">
+       <MSBuild
+           Projects="@(SolutionsToBuild)"
+           Targets="Clean"
+           Properties="Configuration=$(Configuration)" />
+       <RemoveDir Directories="bin\%(SolutionsToBuild.ReleaseRoot)\$(Configuration)" />
+   </Target>
+       <Target Name="RestorePackages" DependsOnTargets="Clean">
+        <MSBuild Projects="@(RestoreCsProjFiles)" Targets="EnableRestore;RestorePackages" StopOnFirstFailure="true" />
+        <MSBuild Projects=".nuget\nuget.targets" Targets="EnableRestore;RestoreBinaryDependencies" />
+    </Target>
+	
+
+    <Target Name="Build" DependsOnTargets="RestorePackages">
+        <MakeDir Directories="bin\%(SolutionsToBuild.ReleaseRoot)\$(Configuration)" />
+        <MSBuild
+            Projects="%(SolutionsToBuild.Identity)"
+            BuildInParallel="%(SolutionsToBuild.BuildInParallel)"
+            Targets="Build"
+            Properties="Configuration=$(Configuration);CodeAnalysis=$(CodeAnalysis);StyleCopEnabled=$(StyleCopEnabled)" />
+    </Target>
+	<Target Name="UnitTest" DependsOnTargets="Build">
+          <Exec ContinueOnError='true' 
+                  Command='$(NUnitEXE) $(NUnitArgs) @(TestAssembly)'
+                  WorkingDirectory='%(WorkingDirectory)' />
+    </Target>
+  <Target Name="AspNetMvcUnityExtensions" DependsOnTargets="UnitTest">
+    
+  </Target>
+</Project>
