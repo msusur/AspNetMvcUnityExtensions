@@ -21,7 +21,7 @@ namespace SampleApplication
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            DependencyInitializer.CurrentContainer.RegisterType<IHomeController, HomeController>();
+            //DependencyInitializer.CurrentContainer.RegisterType<IHomeController, HomeController>();
             DependencyInitializer.CurrentContainer.RegisterType<IFoo, Foo>();
         }
     }
@@ -35,7 +35,7 @@ namespace SampleApplication
     {
         public int GetFoo(int x)
         {
-            return x*2;
+            return x * 2;
         }
     }
 }
