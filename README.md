@@ -28,5 +28,5 @@ Registering the components
 
 For registering the components to your container you may choose to registering via the container instance you used for instantiating the UnityDependencyResolver. The default implementation should like the code block down;
 
-  DependencyInitializer.CurrentContainer.RegisterType<IFoo, Foo>();
+    DependencyInitializer.CurrentContainer.RegisterType<IFoo, Foo>();
 
